@@ -1,4 +1,4 @@
-# study
+# study repository
 개인 스터디 저장소
 
 - 학습과 관련된 자료 저장소입니다.
