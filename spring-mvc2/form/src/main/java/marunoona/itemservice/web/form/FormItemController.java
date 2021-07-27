@@ -9,7 +9,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/form/items")
@@ -18,6 +20,22 @@ import java.util.List;
 public class FormItemController {
 
     private final ItemRepository itemRepository;
+
+    /**
+     * @ModelAttribute를 사용하여 return 을 하면
+     * 모든 컨트롤러의 model에 "regions"로 데이터가 addAttribute된다.
+     * 성능을 고려한다면 해당 데이터를 정적으로 어딘가에 미리 생성해놓고
+     * 불러다 쓰는 형태를 고려해야한다. 그렇지 않으면 매번 생성되어 효율이 낭비된다.
+     * @return
+     */
+    @ModelAttribute("regions")
+    public Map<String, String> regions(){
+        Map<String, String> regions = new LinkedHashMap<>();
+        regions.put("SEOUL", "서울");
+        regions.put("BUSAN", "부산");
+        regions.put("JEJU", "제주");
+        return regions;
+    }
 
     @GetMapping
     public String items(Model model) {
@@ -44,6 +62,7 @@ public class FormItemController {
     public String addItem(@ModelAttribute Item item, RedirectAttributes redirectAttributes) {
 
         log.info("item.open = {}", item.getOpen());
+        log.info("item.regions={}", item.getRegions());
 
         Item savedItem = itemRepository.save(item);
         redirectAttributes.addAttribute("itemId", savedItem.getId());
