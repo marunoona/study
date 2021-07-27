@@ -32,7 +32,9 @@ public class FormItemController {
     }
 
     @GetMapping("/add")
-    public String addForm() {
+    public String addForm(Model model) {
+        //타임리프의 입력폼을 이용하려면 빈 객체라도 model을 넘겨줘야한다.
+        model.addAttribute("item", new Item());
         return "form/addForm";
     }
 
